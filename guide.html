@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Footprints 操作說明手冊</title>
+  <meta name="description" content="Footprints 的圖文操作說明：開始自動記錄、查看時序與足跡、整理旅行、備份與還原。">
+  <link rel="alternate" hreflang="zh-Hant" href="https://mikellai.github.io/footprints-legal/guide.html">
+  <link rel="alternate" hreflang="en" href="https://mikellai.github.io/footprints-legal/guide-en.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://mikellai.github.io/footprints-legal/guide-zh-hans.html">
+  <link rel="alternate" hreflang="ja" href="https://mikellai.github.io/footprints-legal/guide-ja.html">
+  <link rel="alternate" hreflang="x-default" href="https://mikellai.github.io/footprints-legal/guide-en.html">
+  <!--
+    截圖放在 images/zh/，檔名是「功能編號-步驟編號.jpg」，由 images/raw/annotate.py 從模擬器原圖加紅框產生。
+    標成 <li class="noimg"> 的步驟目前沒有截圖（註解裡寫了該拍什麼）；補圖時把 class 拿掉，
+    並在 <p class="txt"> 前面加上 <img class="shot-img" src="images/zh/檔名.jpg" alt="…">。
+  -->
+  <style>
+    :root{--bg:#f5f7f4;--card:#fff;--text:#1d2822;--muted:#617068;--accent:#287a55;--accent-soft:#e4f1ea;--line:#dce5df;--warn:#fff4cf;--warnline:#d7a514;--shot:#eef2ee;--shotline:#b9c7be}
+    @media(prefers-color-scheme:dark){:root{--bg:#101612;--card:#18201b;--text:#eef5f0;--muted:#afbeb5;--accent:#74d3a5;--accent-soft:#1d2c24;--line:#334139;--warn:#3a3013;--warnline:#e0b83c;--shot:#141b17;--shotline:#45564c}}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;line-height:1.75}
+    main{max-width:820px;margin:auto;padding:36px 20px 72px}
+    a{color:var(--accent)}
+    nav.back{margin-bottom:28px}
+    h1{font-size:2rem;line-height:1.25;margin:0 0 6px}
+    h2{font-size:1.45rem;line-height:1.3;margin:56px 0 12px;padding-top:8px}
+    h3{font-size:1.2rem;line-height:1.35;margin:0 0 4px}
+    p,li{color:var(--muted)}
+    .lead{font-size:1.05rem}
+    .points{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px}
+    .points li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+    .points strong{display:block;color:var(--text);font-size:1.05rem}
+    .toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px 16px 40px;margin:24px 0 0}
+    .toc li{margin:2px 0}
+    .feature{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;margin:22px 0;scroll-margin-top:16px}
+    .feature .num{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.82rem;border-radius:999px;padding:1px 12px;margin-bottom:8px}
+    .scene{margin:6px 0 0}
+    .scene b{color:var(--text)}
+    .steps{list-style:none;padding:0;margin:18px 0 0;counter-reset:step}
+    .steps>li{counter-increment:step;display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start;padding:18px 0;border-top:1px solid var(--line)}
+    .shot{border:2px dashed var(--shotline);background:var(--shot);border-radius:22px;aspect-ratio:9/16;padding:16px 14px;font-size:.84rem;line-height:1.6;color:var(--muted);display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+    .shot::before{content:"圖片提示";display:block;font-weight:700;color:var(--accent);font-size:.78rem;letter-spacing:.08em;margin-bottom:6px}
+    .shot-img{width:100%;height:auto;border-radius:22px;border:1px solid var(--line);display:block}
+    .steps>li.noimg{grid-template-columns:1fr}
+    .txt{margin:0;color:var(--text);font-size:1.02rem}
+    .txt::before{content:counter(step) ". ";font-weight:700;color:var(--accent)}
+    .txt small{display:block;color:var(--muted);font-size:.9rem;margin-top:6px}
+    .tip{background:var(--warn);border-left:4px solid var(--warnline);padding:12px 16px;margin:18px 0 0;border-radius:8px;color:var(--text)}
+    .faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:12px 0}
+    .faq summary{cursor:pointer;font-weight:700;color:var(--text)}
+    .faq details p{margin:10px 0 0}
+    .lang{font-size:.85rem;color:var(--muted);margin:0 0 14px}
+    footer{border-top:1px solid var(--line);margin-top:48px;padding-top:18px;font-size:.9rem;color:var(--muted)}
+    @media(max-width:600px){.steps>li{grid-template-columns:1fr}.shot,.shot-img{max-width:240px;margin:0 auto}}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="lang"><span aria-current="page">繁體中文</span> · <a href="guide-en.html" lang="en" hreflang="en">English</a> · <a href="guide-zh-hans.html" lang="zh-Hans" hreflang="zh-Hans">简体中文</a> · <a href="guide-ja.html" lang="ja" hreflang="ja">日本語</a></div>
+    <nav class="back"><a href="index.html">← 返回首頁</a></nav>
+
+    <!-- ===== 1. 前言 ===== -->
+    <h1>Footprints 操作說明手冊</h1>
+    <p class="lead">嗨，歡迎使用 Footprints！這份手冊會一步一步帶你把 App 用起來。不用一次看完，遇到想做的事，再從下面的目錄跳過去就可以了。</p>
+
+    <ul class="points">
+      <li><strong>① 自動記下你去過哪裡</strong>常常想不起來「上禮拜三到底去了哪」？打開自動記錄之後，你待過的地方、怎麼移動的，都會自己出現在「時序」裡，不用手動打卡。</li>
+      <li><strong>② 資料只留在你的手機</strong>擔心位置被上傳？Footprints 沒有帳號、沒有雲端，紀錄只存在這支 iPhone 上。要不要備份、備份給誰，都由你決定。</li>
+      <li><strong>③ 把足跡變成回憶</strong>旅行回來懶得整理？幾天的足跡可以一鍵收成一趟「旅行」，「回顧」還會用圖表告訴你最常去哪、移動了多遠。</li>
+    </ul>
+
+    <ol class="toc">
+      <li><a href="#f1">開始自動記錄</a></li>
+      <li><a href="#f2">用「時序」看一天的足跡</a></li>
+      <li><a href="#f3">手動新增與修改紀錄</a></li>
+      <li><a href="#f4">在「足跡」地圖上看去過的地方</a></li>
+      <li><a href="#f5">新增與整理地點</a></li>
+      <li><a href="#f6">建立與整理「旅行」</a></li>
+      <li><a href="#f7">用「回顧」看統計</a></li>
+      <li><a href="#f8">備份與還原</a></li>
+      <li><a href="#f9">解鎖完整版與還原購買</a></li>
+      <li><a href="#f10">調整外觀與顯示方式</a></li>
+      <li><a href="#faq">常見問題</a></li>
+    </ol>
+
+    <!-- ===== 2. 核心功能 ===== -->
+    <h2>核心功能操作步驟</h2>
+    <p>畫面最下方有五個分頁：「時序」、「足跡」、「回顧」、「旅行」、「設定」。下面的步驟都會從這五個分頁出發。</p>
+
+    <!-- 功能 1 -->
+    <section class="feature" id="f1">
+      <span class="num">功能 1</span>
+      <h3>【開始自動記錄】</h3>
+      <p class="scene"><b>使用場景：</b>剛裝好 App，想讓它開始自動記下你去過的地方。這是第一件要做的事，做完之後其他分頁才會有內容。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/1-1.jpg" alt="功能 1 步驟 1 的畫面截圖">
+          <p class="txt">點擊畫面最下方最右邊的「設定」分頁。<small>也可以直接點畫面中間的「前往設定」按鈕，會到同一個地方。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/1-2.jpg" alt="功能 1 步驟 2 的畫面截圖">
+          <p class="txt">往下滑到「位置與記錄」區塊，把「自動辨識造訪」右邊的開關打開。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/1-3.jpg" alt="功能 1 步驟 3 的畫面截圖">
+          <p class="txt">系統會跳出詢問視窗，先點擊「使用App期間允許」。<small>iPhone 不讓 App 一開始就要求「永遠」，所以要分兩步，下一步再把它改成「永遠」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/1-4.jpg" alt="功能 1 步驟 4 的畫面截圖">
+          <p class="txt">回到 App 後會看到「目前沒有在記錄」的提示，點擊下面的「前往系統設定」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/1-5.jpg" alt="功能 1 步驟 5 的畫面截圖">
+          <p class="txt">在 iPhone 的設定畫面中，點擊「位置」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/1-6.jpg" alt="功能 1 步驟 6 的畫面截圖">
+          <p class="txt">選擇「永遠」，然後回到 Footprints。<small>只有選「永遠」，手機放在口袋裡時 App 才記得到你去了哪。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/1-7.jpg" alt="功能 1 步驟 7 的畫面截圖">
+          <p class="txt">看到「正在背景記錄」就完成了！之後照常生活就好，紀錄會自己出現在「時序」。<small>記錄期間，手機最上方會有藍色的定位指示，這是正常的。</small></p>
+        </li>
+      </ol>
+      <p class="tip">小提醒：想更省電或想讓路線更精細，可以在同一個區塊點「記錄精度」，選「省電」或「高精度」。想停止記錄，把「自動辨識造訪」關掉就好，已經記下的資料不會被刪除。</p>
+    </section>
+
+    <!-- 功能 2 -->
+    <section class="feature" id="f2">
+      <span class="num">功能 2</span>
+      <h3>【用「時序」看一天的足跡】</h3>
+      <p class="scene"><b>使用場景：</b>想回想今天、昨天或某一天去了哪些地方、各待了多久。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/2-1.jpg" alt="功能 2 步驟 1 的畫面截圖">
+          <p class="txt">點擊畫面最下方最左邊的「時序」分頁，就會看到今天的紀錄。<small>由上到下依序是：「今日摘要」、當天的小地圖，以及按時間排列的造訪與交通紀錄。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/2-2.jpg" alt="功能 2 步驟 2 的畫面截圖">
+          <p class="txt">點擊日期左邊的「‹」看前一天，點擊右邊的「›」看後一天。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/2-3.jpg" alt="功能 2 步驟 3 的畫面截圖">
+          <p class="txt">想直接跳到某一天，點擊日期列右邊的日曆圖示，在跳出的月曆上選日期。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/2-4.jpg" alt="功能 2 步驟 4 的畫面截圖">
+          <p class="txt">看完之後，點擊右上角的「回到今天」按鈕就能回到今天。<small>這顆按鈕只有在你不是看今天的時候才會出現。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/2-5.jpg" alt="功能 2 步驟 5 的畫面截圖">
+          <p class="txt">點擊任何一筆造訪卡片，可以打開那個地點的詳細頁面，看你總共去過幾次、累積待了多久。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/2-6.jpg" alt="功能 2 步驟 6 的畫面截圖">
+          <p class="txt">點擊小地圖，可以跳到「足跡」分頁，用大地圖看這一天的路線。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 3 -->
+    <section class="feature" id="f3">
+      <span class="num">功能 3</span>
+      <h3>【手動新增與修改紀錄】</h3>
+      <p class="scene"><b>使用場景：</b>那天忘了帶手機、想補記一筆；或是自動記錄的時間、地點不太對，想自己改一下；也可以順手寫日記、加照片。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-1.jpg" alt="功能 3 步驟 1 的畫面截圖">
+          <p class="txt">在「時序」分頁，點擊畫面右下角的「＋」按鈕。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-2.jpg" alt="功能 3 步驟 2 的畫面截圖">
+          <p class="txt">在展開的選單中點擊「新增造訪」。<small>另外三個選項：「新增交通紀錄」補一段移動、「新增日記」寫幾句話、「新增照片」把照片加到當天的某一筆造訪。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-3.jpg" alt="功能 3 步驟 3 的畫面截圖">
+          <p class="txt">點擊最上方的地點欄位，準備選擇這次去的地方。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-4.jpg" alt="功能 3 步驟 4 的畫面截圖">
+          <p class="txt">在「選擇地點」面板中點選地點。<small>清單裡找不到的話，點擊「新增地點」就能當場建立一個新的。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-5.jpg" alt="功能 3 步驟 5 的畫面截圖">
+          <p class="txt">分別點擊「抵達」與「離開」右邊的時間，調整成正確的時間。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-6.jpg" alt="功能 3 步驟 6 的畫面截圖">
+          <p class="txt">想記得更多的話，可以選「心情」、加「標籤」、在「筆記」寫一句話，或點擊「加入照片」。這些都可以不填。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-7.jpg" alt="功能 3 步驟 7 的畫面截圖">
+          <p class="txt">點擊右上角的「儲存」按鈕。畫面出現「已新增造訪紀錄」就完成了。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/3-8.jpg" alt="功能 3 步驟 8 的畫面截圖">
+          <p class="txt">想修改已經有的紀錄：在「時序」長按那一筆造訪卡片，再點擊「編輯造訪」，改完後一樣按「儲存」。<small>要刪掉的話，點擊「刪除這筆造訪」並確認。刪除之後無法復原，請小心。</small></p>
+        </li>
+      </ol>
+      <p class="tip">小提醒：你手動改過的內容，不會再被自動記錄蓋掉，可以放心修改。交通紀錄與日記直接點一下就能進去編輯。</p>
+    </section>
+
+    <!-- 功能 4 -->
+    <section class="feature" id="f4">
+      <span class="num">功能 4</span>
+      <h3>【在「足跡」地圖上看去過的地方】</h3>
+      <p class="scene"><b>使用場景：</b>想用地圖看這個月、今年走過哪些地方，或是找出某一家店是什麼時候去的。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-1.jpg" alt="功能 4 步驟 1 的畫面截圖">
+          <p class="txt">點擊畫面最下方的「足跡」分頁，打開地圖。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-2.jpg" alt="功能 4 步驟 2 的畫面截圖">
+          <p class="txt">點擊「今天」、「本週」、「本月」或「今年」，切換要看多久的足跡。<small>點擊「自訂」可以自己選開始與結束日期，選好後按「套用」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-3.jpg" alt="功能 4 步驟 3 的畫面截圖">
+          <p class="txt">想找特定的地方，點擊最上方的搜尋框，輸入地點名稱、城市或標籤。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-4.jpg" alt="功能 4 步驟 4 的畫面截圖">
+          <p class="txt">點擊搜尋框右邊的圖示按鈕，打開「篩選」面板。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-5.jpg" alt="功能 4 步驟 5 的畫面截圖">
+          <p class="txt">在「篩選」面板中勾選你想看的內容，例如「只看地點」或某幾種「地點分類」。<small>選好之後點擊最下方的「套用」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-6.jpg" alt="功能 4 步驟 6 的畫面截圖">
+          <p class="txt">點擊地圖上任何一個標記，下方會滑出這個地點的小卡片，告訴你去過幾次、總共待了多久。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-7.jpg" alt="功能 4 步驟 7 的畫面截圖">
+          <p class="txt">點擊「查看完整地點詳情」看這個地點的所有造訪，或點擊「查看當日時間軸」跳回那一天的紀錄。<small>把卡片往上拉，還可以看到最近幾次造訪與照片。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/4-8.jpg" alt="功能 4 步驟 8 的畫面截圖">
+          <p class="txt">點擊右側最上面的定位按鈕，地圖會移到你現在的位置並顯示藍點。<small>中間那顆是「地圖圖層」，可以換成「衛星影像」等樣式。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 5 -->
+    <section class="feature" id="f5">
+      <span class="num">功能 5</span>
+      <h3>【新增與整理地點】</h3>
+      <p class="scene"><b>使用場景：</b>自動記錄發現了新地方但沒有名字、同一家店被記成兩個地點，或是想先把「家」、「公司」建立起來。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/5-1.jpg" alt="功能 5 步驟 1 的畫面截圖">
+          <p class="txt">在「足跡」分頁，把地圖移到想新增的位置，點擊右側的「＋」按鈕。<small>也可以直接長按地圖上的那個位置。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/5-2.jpg" alt="功能 5 步驟 2 的畫面截圖">
+          <p class="txt">在「名稱」欄位輸入地點的名字，例如「家」或「巷口咖啡」。<small>座標已經自動帶入，不用自己填。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/5-3.jpg" alt="功能 5 步驟 3 的畫面截圖">
+          <p class="txt">選一個「分類」，再點擊「建立地點」。地圖上就會出現這個地點了。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/5-4.jpg" alt="功能 5 步驟 4 的畫面截圖">
+          <p class="txt">幫自動發現的地點取名字：到「設定」分頁，在「位置與記錄」區塊點擊「未命名地點」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/5-5.jpg" alt="功能 5 步驟 5 的畫面截圖">
+          <p class="txt">點擊其中一個地點，輸入名稱後儲存。取好名字的地點就會從這份清單消失。</p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：「設定」分頁的「位置與記錄」區塊。用紅框圈出「可能重複的地點」那一列，右邊顯示數字（例如 2）；它的上一列是已打開的「重疊地點通知」。 -->
+          <p class="txt">合併重複的地點：在「設定」的「位置與記錄」區塊點擊「可能重複的地點」。<small>要先打開「重疊地點通知」，而且真的有看起來重複的地點，這一列才會出現。</small></p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：「可能重複的地點」頁面，列出成對的地點，每一組下方寫著原因（例如「距離很近，名稱也相似・相距 30 公尺」）。用紅框圈出其中一組。 -->
+          <p class="txt">點擊看起來是同一個地方的那一組。</p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：從下方滑出的「要保留哪一個？」面板，上面是兩個地點各一張卡片（顯示名稱與造訪次數），下面有一行「這是兩個不同的地方」。用紅框圈出想保留的那張卡片。 -->
+          <p class="txt">在「要保留哪一個？」面板中，點擊你想留下來的那一個。兩邊的造訪紀錄都會保留，併到同一個地點底下。<small>如果其實是兩個不同的地方，點擊「這是兩個不同的地方」，以後就不會再提醒這一組。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 6 -->
+    <section class="feature" id="f6">
+      <span class="num">功能 6</span>
+      <h3>【建立與整理「旅行」】</h3>
+      <p class="scene"><b>使用場景：</b>出國或出遊回來，想把那幾天的足跡、照片和心得收成一本旅行日誌。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-1.jpg" alt="功能 6 步驟 1 的畫面截圖">
+          <p class="txt">點擊畫面最下方的「旅行」分頁。</p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：「旅行」分頁最上方的建議卡片特寫，標題類似「10月3日－10月7日在東京」。用紅框圈出卡片上的「建立旅行」按鈕。 -->
+          <p class="txt">如果看到「要把這幾天收成一趟旅行嗎」的建議卡片，直接點擊「建立旅行」最快。<small>不想要這個建議，點擊「略過」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-3.jpg" alt="功能 6 步驟 3 的畫面截圖">
+          <p class="txt">沒有建議卡片、或想自己從頭建立，點擊右上角的「＋」按鈕。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-4.jpg" alt="功能 6 步驟 4 的畫面截圖">
+          <p class="txt">輸入「旅行名稱」，再點擊「日期」選擇出發與回來的日子。<small>一定要有名稱才能儲存。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-5.jpg" alt="功能 6 步驟 5 的畫面截圖">
+          <p class="txt">想讓旅行更完整，可以點擊「挑一張封面」、加入「同行的人」和「標籤」。這些都可以之後再補。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-6.jpg" alt="功能 6 步驟 6 的畫面截圖">
+          <p class="txt">在「要納入的紀錄」區塊，勾選要放進這趟旅行的造訪紀錄，或直接點擊「全選」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-7.jpg" alt="功能 6 步驟 7 的畫面截圖">
+          <p class="txt">點擊「儲存」。畫面出現「已建立旅行」就完成了。<small>還沒整理完的話，可以先打開「收在『草稿』裡，之後再補完」的開關。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-8.jpg" alt="功能 6 步驟 8 的畫面截圖">
+          <p class="txt">回到「旅行」分頁，點擊剛建立的旅行卡片，就能看到每一天去了哪。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-9.jpg" alt="功能 6 步驟 9 的畫面截圖">
+          <p class="txt">點擊某一天卡片下方的「寫下這一天」，就能記下那天「特別的事」、心情和心得。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-10.jpg" alt="功能 6 步驟 10 的畫面截圖">
+          <p class="txt">在「相簿」區塊點擊「全部」可以看所有照片，並用「加入照片」放進更多。<small>長按照片可以「設為封面」，或把它「從這趟旅行移除」（照片本身不會被刪除）。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/6-11.jpg" alt="功能 6 步驟 11 的畫面截圖">
+          <p class="txt">點擊右上角的「⋯」按鈕，可以「編輯旅行」、「標成草稿」、「封存旅行」或「刪除旅行」。<small>刪除旅行只會刪掉整理的內容，造訪紀錄與照片都還在。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 7 -->
+    <section class="feature" id="f7">
+      <span class="num">功能 7</span>
+      <h3>【用「回顧」看統計】</h3>
+      <p class="scene"><b>使用場景：</b>好奇自己這個月最常去哪裡、總共移動了多遠、通勤花了多少時間。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/7-1.jpg" alt="功能 7 步驟 1 的畫面截圖">
+          <p class="txt">點擊畫面最下方正中間的「回顧」分頁。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/7-2.jpg" alt="功能 7 步驟 2 的畫面截圖">
+          <p class="txt">點擊「日」、「週」、「月」或「年」，切換要統計多長的時間。<small>點擊「自訂」可以自己選一段期間。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/7-3.jpg" alt="功能 7 步驟 3 的畫面截圖">
+          <p class="txt">往下滑，一張一張看圖表：移動了多遠、最常去哪些地點、最常用什麼交通方式、心情變化等等。</p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：「回顧」頁面的「通勤時間」卡片，上面寫著「到設定開啟『通勤追蹤』，這裡會畫出每趟通勤花多久。」用紅框圈出整張卡片。 -->
+          <p class="txt">想看通勤時間：點擊「通勤時間」卡片，會直接帶你到「設定」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/7-5.jpg" alt="功能 7 步驟 5 的畫面截圖">
+          <p class="txt">打開「通勤追蹤」的開關，接著點擊下面出現的「住家」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/7-6.jpg" alt="功能 7 步驟 6 的畫面截圖">
+          <p class="txt">在清單中點選你的家。再用同樣的方法點擊「公司／學校」選好地點。<small>清單裡沒有的話，請先照功能 5 把地點建立起來。「通勤日」可以選星期幾要算通勤。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/7-7.jpg" alt="功能 7 步驟 7 的畫面截圖">
+          <p class="txt">回到「回顧」分頁，「通勤時間」卡片就會畫出每趟通勤花了多久。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 8 -->
+    <section class="feature" id="f8">
+      <span class="num">功能 8</span>
+      <h3>【備份與還原】</h3>
+      <p class="scene"><b>使用場景：</b>準備換手機、要重裝 App，或單純想替重要的回憶留一份保險。因為資料只存在這支手機上，建議定期備份。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/8-1.jpg" alt="功能 8 步驟 1 的畫面截圖">
+          <p class="txt">到「設定」分頁，在「備份」區塊點擊「備份到手機」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/8-2.jpg" alt="功能 8 步驟 2 的畫面截圖">
+          <p class="txt">選擇「不含照片」或「含照片」。<small>換手機的話建議選「含照片」，還原之後照片才會一起回來。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/8-3.jpg" alt="功能 8 步驟 3 的畫面截圖">
+          <p class="txt">點擊「建立備份」，等「打包中…」跑完，看到「已存到 Footprints 資料夾」就備份好了。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/8-4.jpg" alt="功能 8 步驟 4 的畫面截圖">
+          <p class="txt">接著點擊「管理備份檔」，把備份傳到手機以外的地方。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/8-5.jpg" alt="功能 8 步驟 5 的畫面截圖">
+          <p class="txt">點擊備份右邊的分享圖示，把檔案存到 iCloud 雲碟、AirDrop 到電腦，或傳給自己。<small>這一步很重要：備份檔原本只放在這支手機裡，手機掉了或 App 被移除，它也會跟著不見。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/8-6.jpg" alt="功能 8 步驟 6 的畫面截圖">
+          <p class="txt">要還原時：在「設定」的「備份」區塊點擊「從備份還原」。</p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：iPhone 的檔案選擇畫面，顯示一個名為「Footprints-備份-2026-10-12.zip」的檔案。用紅框圈出這個檔案。 -->
+          <p class="txt">在檔案選擇畫面中，找到並點選你的 Footprints 備份檔。</p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：跳出的確認視窗，標題是「用這份備份取代現有資料？」，內文寫著備份日期、筆數，以及「這支手機上現在的資料會被全部取代，不是合併。」用紅框圈出「還原」按鈕。 -->
+          <p class="txt">確認日期和筆數沒錯之後，點擊「還原」。看到「已還原 ○ 筆紀錄」就完成了。</p>
+        </li>
+      </ol>
+      <p class="tip">請注意：還原會把手機上現有的資料「全部取代」，不是把兩邊加在一起。如果手機上已經有新紀錄，請先替它另外做一份備份。</p>
+    </section>
+
+    <!-- 功能 9 -->
+    <section class="feature" id="f9">
+      <span class="num">功能 9</span>
+      <h3>【解鎖完整版與還原購買】</h3>
+      <p class="scene"><b>使用場景：</b>30 天免費試用快到期，想繼續自動記錄；或是換了手機、重裝 App，想把已經買過的完整版找回來。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/9-1.jpg" alt="功能 9 步驟 1 的畫面截圖">
+          <p class="txt">到「設定」分頁，在「完整版」區塊點擊「解鎖完整版」。<small>試用快到期時，畫面上方也會出現提醒，點擊提醒上的「解鎖」會到同一頁。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/9-2.jpg" alt="功能 9 步驟 2 的畫面截圖">
+          <p class="txt">看完說明後，點擊上方的「以 ○○ 解鎖（一次付清）」按鈕。<small>實際金額以畫面上顯示的為準。這是一次付清，不是訂閱，不會自動續費。</small></p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：iPhone 系統的 App Store 付款確認面板（顯示品項名稱、金額，以及按兩下側邊按鈕確認的提示）。不需要紅框。 -->
+          <p class="txt">依照 iPhone 的指示確認付款（按兩下側邊按鈕，或使用 Face ID／Touch ID）。</p>
+        </li>
+        <li class="noimg">
+          <!-- 尚無截圖：「解鎖完整版」頁面，最上方的狀態變成「完整版已經解鎖，謝謝你的支持。」用紅框圈出這一行。 -->
+          <p class="txt">看到「完整版已經解鎖」就完成了，自動記錄會繼續運作。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/9-5.jpg" alt="功能 9 步驟 5 的畫面截圖">
+          <p class="txt">之前買過、換了手機或重裝 App：在同一個頁面的最下方點擊「還原購買」，不用再付一次錢。<small>請確認手機登入的是當初購買時用的 Apple ID。</small></p>
+        </li>
+      </ol>
+      <p class="tip">小提醒：「還原購買」只會恢復解鎖狀態，不會把你的紀錄帶回來。紀錄請用功能 8 的備份與還原來搬。</p>
+    </section>
+
+    <!-- 功能 10 -->
+    <section class="feature" id="f10">
+      <span class="num">功能 10</span>
+      <h3>【調整外觀與顯示方式】</h3>
+      <p class="scene"><b>使用場景：</b>想換成深色畫面、把距離改成英里，或是讓地圖看起來不一樣。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/10-1.jpg" alt="功能 10 步驟 1 的畫面截圖">
+          <p class="txt">到「設定」分頁，往下滑到「顯示與地圖」區塊，點擊「外觀」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/10-2.jpg" alt="功能 10 步驟 2 的畫面截圖">
+          <p class="txt">選擇「跟隨系統」、「淺色」或「深色」，畫面會馬上換過去。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/10-3.jpg" alt="功能 10 步驟 3 的畫面截圖">
+          <p class="txt">點擊「距離單位」，可以在「公里」與「英里」之間切換。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/10-4.jpg" alt="功能 10 步驟 4 的畫面截圖">
+          <p class="txt">點擊「地圖標記顯示」，決定地圖上的標記要怎麼呈現。<small>地點很多的話，「自動群組」會把靠近的標記收在一起，看起來比較清爽。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/zh/10-5.jpg" alt="功能 10 步驟 5 的畫面截圖">
+          <p class="txt">點擊「設定」最上方的卡片，可以輸入「你的名字」。<small>名字只會顯示在這支手機上，不會上傳。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== 3. FAQ ===== -->
+    <h2 id="faq">常見問題</h2>
+    <div class="faq">
+      <details open>
+        <summary>Q1：我的位置資料會被上傳嗎？</summary>
+        <p>不會。Footprints 沒有帳號、也沒有雲端同步，你的紀錄只保存在這支手機上。只有你自己按下「備份到手機」並把檔案分享出去時，資料才會離開手機。更完整的說明可以在 App 的「設定」→「說明中心與常見問題」，或<a href="privacy.html">隱私權政策</a>中看到。</p>
+      </details>
+      <details>
+        <summary>Q2：為什麼「時序」沒有自動出現紀錄？</summary>
+        <p>請依序檢查三件事：</p>
+        <p>① 「設定」→「位置與記錄」→「自動辨識造訪」有沒有打開。<br>
+        ② 位置權限是不是「永遠」。如果是「使用 App 期間」，手機一收起來就記不到了，請照功能 1 的步驟 4 到 6 修改。<br>
+        ③ 如果「設定」裡顯示已經很久沒有新的定位點，點擊「重新開始記錄」。</p>
+        <p>另外，你一直待在同一個地方不動時，本來就不會有新的紀錄，這是正常的。免費試用結束而沒有解鎖時，自動記錄也會停止。</p>
+      </details>
+      <details>
+        <summary>Q3：換手機時，資料要怎麼搬過去？</summary>
+        <p>分成兩件事：<b>紀錄</b>用備份搬，在舊手機照功能 8 做一份「含照片」的備份並傳出來，到新手機用「從備份還原」讀進去。<b>完整版</b>用「還原購買」找回來（功能 9），只要是同一個 Apple ID 就不用再付費。兩個都做完，新手機就跟舊手機一樣了。</p>
+      </details>
+      <details>
+        <summary>Q4：免費試用結束後，之前的紀錄還看得到嗎？</summary>
+        <p>看得到。試用結束後如果沒有解鎖，自動記錄會停止，也不能再新增或修改紀錄；但你記錄過的所有東西都還在，隨時可以查看、備份、匯出或刪除。解鎖之後就會繼續記錄。</p>
+      </details>
+      <details>
+        <summary>Q5：自動記錄的地點或時間不對，怎麼辦？</summary>
+        <p>可以自己改。在「時序」長按那一筆造訪，點擊「編輯造訪」，就能換地點、調整時間（功能 3）。如果相鄰的兩家店被記成同一個地點，在編輯時點擊地點欄位 →「新增地點」，就能把這次造訪改掛到新的地點。常常因為短暫路過而多出紀錄的話，可以到「設定」→「位置與記錄」把「最短停留時間」調長一點。</p>
+      </details>
+    </div>
+
+    <footer>
+      <p>還有其他問題嗎？在 App 的「設定」→「支援」→「意見回饋」寫信給我們，或前往<a href="support.html">支援頁面</a>。</p>
+      <p>© 2026 CHIAHSIN LAI．Footprints</p>
+    </footer>
+  </main>
+</body>
+</html>

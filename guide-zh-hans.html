@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Footprints 操作说明手册</title>
+  <meta name="description" content="Footprints 的图文操作说明：开始自动记录、查看时序与足迹、整理旅行、备份与恢复。">
+  <link rel="alternate" hreflang="zh-Hant" href="https://mikellai.github.io/footprints-legal/guide.html">
+  <link rel="alternate" hreflang="en" href="https://mikellai.github.io/footprints-legal/guide-en.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://mikellai.github.io/footprints-legal/guide-zh-hans.html">
+  <link rel="alternate" hreflang="ja" href="https://mikellai.github.io/footprints-legal/guide-ja.html">
+  <link rel="alternate" hreflang="x-default" href="https://mikellai.github.io/footprints-legal/guide-en.html">
+  <!--
+    截图与英文版共用 images/en/（英文界面），由 images/raw/annotate.py 生成（python3 annotate.py en）。
+    标成 <li class="noimg"> 的步骤目前没有截图，注释里写了该拍什么。
+  -->
+  <style>
+    :root{--bg:#f5f7f4;--card:#fff;--text:#1d2822;--muted:#617068;--accent:#287a55;--accent-soft:#e4f1ea;--line:#dce5df;--warn:#fff4cf;--warnline:#d7a514;--shot:#eef2ee;--shotline:#b9c7be}
+    @media(prefers-color-scheme:dark){:root{--bg:#101612;--card:#18201b;--text:#eef5f0;--muted:#afbeb5;--accent:#74d3a5;--accent-soft:#1d2c24;--line:#334139;--warn:#3a3013;--warnline:#e0b83c;--shot:#141b17;--shotline:#45564c}}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;line-height:1.75}
+    main{max-width:820px;margin:auto;padding:36px 20px 72px}
+    a{color:var(--accent)}
+    nav.back{margin-bottom:28px}
+    h1{font-size:2rem;line-height:1.25;margin:0 0 6px}
+    h2{font-size:1.45rem;line-height:1.3;margin:56px 0 12px;padding-top:8px}
+    h3{font-size:1.2rem;line-height:1.35;margin:0 0 4px}
+    p,li{color:var(--muted)}
+    .lead{font-size:1.05rem}
+    .points{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px}
+    .points li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+    .points strong{display:block;color:var(--text);font-size:1.05rem}
+    .toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px 16px 40px;margin:24px 0 0}
+    .toc li{margin:2px 0}
+    .feature{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;margin:22px 0;scroll-margin-top:16px}
+    .feature .num{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.82rem;border-radius:999px;padding:1px 12px;margin-bottom:8px}
+    .scene{margin:6px 0 0}
+    .scene b{color:var(--text)}
+    .steps{list-style:none;padding:0;margin:18px 0 0;counter-reset:step}
+    .steps>li{counter-increment:step;display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start;padding:18px 0;border-top:1px solid var(--line)}
+    .shot{border:2px dashed var(--shotline);background:var(--shot);border-radius:22px;aspect-ratio:9/16;padding:16px 14px;font-size:.84rem;line-height:1.6;color:var(--muted);display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+    .shot::before{content:"图片提示";display:block;font-weight:700;color:var(--accent);font-size:.78rem;letter-spacing:.08em;margin-bottom:6px}
+    .shot-img{width:100%;height:auto;border-radius:22px;border:1px solid var(--line);display:block}
+    .steps>li.noimg{grid-template-columns:1fr}
+    .note{font-size:.92rem}
+    .txt{margin:0;color:var(--text);font-size:1.02rem}
+    .txt::before{content:counter(step) ". ";font-weight:700;color:var(--accent)}
+    .txt small{display:block;color:var(--muted);font-size:.9rem;margin-top:6px}
+    .tip{background:var(--warn);border-left:4px solid var(--warnline);padding:12px 16px;margin:18px 0 0;border-radius:8px;color:var(--text)}
+    .faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:12px 0}
+    .faq summary{cursor:pointer;font-weight:700;color:var(--text)}
+    .faq details p{margin:10px 0 0}
+    .lang{font-size:.85rem;color:var(--muted);margin:0 0 14px}
+    footer{border-top:1px solid var(--line);margin-top:48px;padding-top:18px;font-size:.9rem;color:var(--muted)}
+    @media(max-width:600px){.steps>li{grid-template-columns:1fr}.shot,.shot-img{max-width:240px;margin:0 auto}}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="lang"><a href="guide.html" lang="zh-Hant" hreflang="zh-Hant">繁體中文</a> · <a href="guide-en.html" lang="en" hreflang="en">English</a> · <span aria-current="page">简体中文</span> · <a href="guide-ja.html" lang="ja" hreflang="ja">日本語</a></div>
+    <nav class="back"><a href="index-zh-hans.html">← 返回首页</a></nav>
+
+    <!-- ===== 1. 前言 ===== -->
+    <h1>Footprints 操作说明手册</h1>
+    <p class="lead">嗨，欢迎使用 Footprints！这份手册会一步一步带你把 App 用起来。不用一次看完，遇到想做的事，再从下面的目录跳过去就可以了。</p>
+
+    <ul class="points">
+      <li><strong>① 自动记下你去过哪里</strong>常常想不起来“上周三到底去了哪儿”？打开自动记录之后，你待过的地方、怎么移动的，都会自己出现在「时序」里，不用手动打卡。</li>
+      <li><strong>② 数据只留在你的手机</strong>担心位置被上传？Footprints 没有账号、没有云端，记录只保存在这部 iPhone 上。要不要备份、备份给谁，都由你决定。</li>
+      <li><strong>③ 把足迹变成回忆</strong>旅行回来懒得整理？几天的足迹可以一键整理成一次「旅行」，「回顾」还会用图表告诉你最常去哪儿、移动了多远。</li>
+    </ul>
+
+    <ol class="toc">
+      <li><a href="#f1">开始自动记录</a></li>
+      <li><a href="#f2">用「时序」看一天的足迹</a></li>
+      <li><a href="#f3">手动新增与修改记录</a></li>
+      <li><a href="#f4">在「足迹」地图上看去过的地方</a></li>
+      <li><a href="#f5">新增与整理地点</a></li>
+      <li><a href="#f6">创建与整理「旅行」</a></li>
+      <li><a href="#f7">用「回顾」看统计</a></li>
+      <li><a href="#f8">备份与恢复</a></li>
+      <li><a href="#f9">解锁完整版与恢复购买</a></li>
+      <li><a href="#f10">调整外观与显示方式</a></li>
+      <li><a href="#faq">常见问题</a></li>
+    </ol>
+
+    <!-- ===== 2. 核心功能 ===== -->
+    <h2>核心功能操作步骤</h2>
+    <p>屏幕最下方有五个标签页：「时序」、「足迹」、「回顾」、「旅行」、「设置」。下面的步骤都会从这五个标签页出发。</p>
+    <p class="note">说明：以下截图为英文界面，按钮位置与中文界面相同，文字请以步骤说明为准。</p>
+
+    <!-- 功能 1 -->
+    <section class="feature" id="f1">
+      <span class="num">功能 1</span>
+      <h3>【开始自动记录】</h3>
+      <p class="scene"><b>使用场景：</b>刚装好 App，想让它开始自动记下你去过的地方。这是第一件要做的事，做完之后其他标签页才会有内容。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-1.jpg" alt="功能 1 步骤 1 的画面截图（英文界面）">
+          <p class="txt">点击屏幕最下方最右边的「设置」标签页。<small>也可以直接点屏幕中间的「前往设置」按钮，会到同一个地方。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-2.jpg" alt="功能 1 步骤 2 的画面截图（英文界面）">
+          <p class="txt">往下滑到「位置与记录」区块，把「自动识别到访」右边的开关打开。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-3.jpg" alt="功能 1 步骤 3 的画面截图（英文界面）">
+          <p class="txt">系统会弹出询问窗口，先点击「使用App时允许」。<small>iPhone 不让 App 一开始就请求「始终」，所以要分两步，下一步再把它改成「始终」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-4.jpg" alt="功能 1 步骤 4 的画面截图（英文界面）">
+          <p class="txt">回到 App 后会看到「目前没有在记录」的提示，点击下面的「前往系统设置」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-5.jpg" alt="功能 1 步骤 5 的画面截图（英文界面）">
+          <p class="txt">在 iPhone 的设置界面中，点击「位置」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-6.jpg" alt="功能 1 步骤 6 的画面截图（英文界面）">
+          <p class="txt">选择「始终」，然后回到 Footprints。<small>只有选「始终」，手机放在口袋里时 App 才能记下你去了哪儿。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-7.jpg" alt="功能 1 步骤 7 的画面截图（英文界面）">
+          <p class="txt">看到「正在后台记录」就完成了！之后照常生活就好，记录会自己出现在「时序」。<small>记录期间，手机最上方会有蓝色的定位指示，这是正常的。</small></p>
+        </li>
+      </ol>
+      <p class="tip">小提示：想更省电或想让路线更精细，可以在同一个区块点「记录精度」，选「省电」或「高精度」。想停止记录，把「自动识别到访」关掉就好，已经记下的数据不会被删除。</p>
+    </section>
+
+    <!-- 功能 2 -->
+    <section class="feature" id="f2">
+      <span class="num">功能 2</span>
+      <h3>【用「时序」看一天的足迹】</h3>
+      <p class="scene"><b>使用场景：</b>想回想今天、昨天或某一天去了哪些地方、各待了多久。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-1.jpg" alt="功能 2 步骤 1 的画面截图（英文界面）">
+          <p class="txt">点击屏幕最下方最左边的「时序」标签页，就会看到今天的记录。<small>从上到下依次是：「今日摘要」、当天的小地图，以及按时间排列的到访与移动记录。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-2.jpg" alt="功能 2 步骤 2 的画面截图（英文界面）">
+          <p class="txt">点击日期左边的「‹」看前一天，点击右边的「›」看后一天。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-3.jpg" alt="功能 2 步骤 3 的画面截图（英文界面）">
+          <p class="txt">想直接跳到某一天，点击日期栏右边的日历图标，在弹出的月历上选日期。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-4.jpg" alt="功能 2 步骤 4 的画面截图（英文界面）">
+          <p class="txt">看完之后，点击右上角的「回到今天」按钮就能回到今天。<small>这个按钮只有在你看的不是今天的时候才会出现。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-5.jpg" alt="功能 2 步骤 5 的画面截图（英文界面）">
+          <p class="txt">点击任何一条到访卡片，可以打开那个地点的详情页面，看你总共去过几次、累计待了多久。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-6.jpg" alt="功能 2 步骤 6 的画面截图（英文界面）">
+          <p class="txt">点击小地图，可以跳到「足迹」标签页，用大地图看这一天的路线。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 3 -->
+    <section class="feature" id="f3">
+      <span class="num">功能 3</span>
+      <h3>【手动新增与修改记录】</h3>
+      <p class="scene"><b>使用场景：</b>那天忘了带手机、想补记一条；或是自动记录的时间、地点不太对，想自己改一下；也可以顺手写日记、加照片。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-1.jpg" alt="功能 3 步骤 1 的画面截图（英文界面）">
+          <p class="txt">在「时序」标签页，点击屏幕右下角的「＋」按钮。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-2.jpg" alt="功能 3 步骤 2 的画面截图（英文界面）">
+          <p class="txt">在展开的菜单中点击「新增到访」。<small>另外三个选项：「新增移动记录」补一段移动、「新增日记」写几句话、「添加照片」把照片加到当天的某一条到访。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-3.jpg" alt="功能 3 步骤 3 的画面截图（英文界面）">
+          <p class="txt">点击最上方的地点栏，准备选择这次去的地方。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-4.jpg" alt="功能 3 步骤 4 的画面截图（英文界面）">
+          <p class="txt">在「选择地点」面板中点选地点。<small>列表里找不到的话，点击「新增地点」就能当场创建一个新的。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-5.jpg" alt="功能 3 步骤 5 的画面截图（英文界面）">
+          <p class="txt">分别点击「到达」与「离开」右边的时间，调整成正确的时间。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-6.jpg" alt="功能 3 步骤 6 的画面截图（英文界面）">
+          <p class="txt">想记得更多的话，可以选「心情」、加「标签」、在「笔记」写一句话，或点击「添加照片」。这些都可以不填。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-7.jpg" alt="功能 3 步骤 7 的画面截图（英文界面）">
+          <p class="txt">点击右上角的「保存」按钮。屏幕出现「已新增到访记录」就完成了。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-8.jpg" alt="功能 3 步骤 8 的画面截图（英文界面）">
+          <p class="txt">想修改已有的记录：在「时序」长按那一条到访卡片，再点击「编辑到访」，改完后同样点「保存」。<small>要删掉的话，点击「删除这条到访」并确认。删除之后无法恢复，请小心。</small></p>
+        </li>
+      </ol>
+      <p class="tip">小提示：你手动改过的内容，不会再被自动记录覆盖，可以放心修改。移动记录与日记直接点一下就能进去编辑。</p>
+    </section>
+
+    <!-- 功能 4 -->
+    <section class="feature" id="f4">
+      <span class="num">功能 4</span>
+      <h3>【在「足迹」地图上看去过的地方】</h3>
+      <p class="scene"><b>使用场景：</b>想用地图看这个月、今年走过哪些地方，或是找出某一家店是什么时候去的。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-1.jpg" alt="功能 4 步骤 1 的画面截图（英文界面）">
+          <p class="txt">点击屏幕最下方的「足迹」标签页，打开地图。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-2.jpg" alt="功能 4 步骤 2 的画面截图（英文界面）">
+          <p class="txt">点击「今天」、「本周」、「本月」或「今年」，切换要看多久的足迹。<small>点击「自定义」可以自己选开始与结束日期，选好后点「应用」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-3.jpg" alt="功能 4 步骤 3 的画面截图（英文界面）">
+          <p class="txt">想找特定的地方，点击最上方的搜索框，输入地点名称、城市或标签。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-4.jpg" alt="功能 4 步骤 4 的画面截图（英文界面）">
+          <p class="txt">点击搜索框右边的图标按钮，打开「筛选」面板。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-5.jpg" alt="功能 4 步骤 5 的画面截图（英文界面）">
+          <p class="txt">在「筛选」面板中勾选你想看的内容，例如「只看地点」或某几种「地点分类」。<small>选好之后点击最下方的「应用」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-6.jpg" alt="功能 4 步骤 6 的画面截图（英文界面）">
+          <p class="txt">点击地图上任何一个标记，下方会滑出这个地点的小卡片，告诉你去过几次、总共待了多久。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-7.jpg" alt="功能 4 步骤 7 的画面截图（英文界面）">
+          <p class="txt">点击「查看完整地点详情」看这个地点的所有到访，或点击「查看当日时间轴」跳回那一天的记录。<small>把卡片往上拉，还可以看到最近几次到访与照片。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-8.jpg" alt="功能 4 步骤 8 的画面截图（英文界面）">
+          <p class="txt">点击右侧最上面的定位按钮，地图会移到你现在的位置并显示蓝点。<small>中间那个是「地图图层」，可以换成「卫星图像」等样式。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 5 -->
+    <section class="feature" id="f5">
+      <span class="num">功能 5</span>
+      <h3>【新增与整理地点】</h3>
+      <p class="scene"><b>使用场景：</b>自动记录发现了新地方但没有名字、同一家店被记成两个地点，或是想先把“家”、“公司”创建好。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-1.jpg" alt="功能 5 步骤 1 的画面截图（英文界面）">
+          <p class="txt">在「足迹」标签页，把地图移到想新增的位置，点击右侧的「＋」按钮。<small>也可以直接长按地图上的那个位置。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-2.jpg" alt="功能 5 步骤 2 的画面截图（英文界面）">
+          <p class="txt">在「名称」栏输入地点的名字，例如“家”或“巷口咖啡”。<small>坐标已经自动带入，不用自己填。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-3.jpg" alt="功能 5 步骤 3 的画面截图（英文界面）">
+          <p class="txt">选一个「分类」，再点击「创建地点」。地图上就会出现这个地点了。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-4.jpg" alt="功能 5 步骤 4 的画面截图（英文界面）">
+          <p class="txt">给自动发现的地点取名字：到「设置」标签页，在「位置与记录」区块点击「未命名地点」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-5.jpg" alt="功能 5 步骤 5 的画面截图（英文界面）">
+          <p class="txt">点击其中一个地点，输入名称后保存。取好名字的地点就会从这份列表消失。</p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: 「设置」标签页的「位置与记录」区块。用红框圈出「可能重复的地点」那一行，右边显示数字（例如 2）；它的上一行是已打开的「重叠地点通知」。 -->
+          <p class="txt">合并重复的地点：在「设置」的「位置与记录」区块点击「可能重复的地点」。<small>要先打开「重叠地点通知」，而且确实有看起来重复的地点，这一行才会出现。</small></p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: 「可能重复的地点」页面，列出成对的地点，每一组下方写着原因（例如「距离很近，名称也相似·相距 30 米」）。用红框圈出其中一组。 -->
+          <p class="txt">点击看起来是同一个地方的那一组。</p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: 从下方滑出的「要保留哪一个？」面板，上面是两个地点各一张卡片（显示名称与到访次数），下面有一行「这是两个不同的地方」。用红框圈出想保留的那张卡片。 -->
+          <p class="txt">在「要保留哪一个？」面板中，点击你想留下来的那一个。两边的到访记录都会保留，合并到同一个地点下面。<small>如果其实是两个不同的地方，点击「这是两个不同的地方」，以后就不会再提醒这一组。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 6 -->
+    <section class="feature" id="f6">
+      <span class="num">功能 6</span>
+      <h3>【创建与整理「旅行」】</h3>
+      <p class="scene"><b>使用场景：</b>出国或出游回来，想把那几天的足迹、照片和心得整理成一本旅行日志。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-1.jpg" alt="功能 6 步骤 1 的画面截图（英文界面）">
+          <p class="txt">点击屏幕最下方的「旅行」标签页。</p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: 「旅行」标签页最上方的建议卡片特写，标题类似「10月3日－10月7日在东京」。用红框圈出卡片上的「创建旅行」按钮。 -->
+          <p class="txt">如果看到「要把这几天整理成一次旅行吗」的建议卡片，直接点击「创建旅行」最快。<small>不想要这个建议，点击「忽略」。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-3.jpg" alt="功能 6 步骤 3 的画面截图（英文界面）">
+          <p class="txt">没有建议卡片、或想自己从头创建，点击右上角的「＋」按钮。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-4.jpg" alt="功能 6 步骤 4 的画面截图（英文界面）">
+          <p class="txt">输入「旅行名称」，再点击「日期」选择出发与回来的日子。<small>一定要有名称才能保存。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-5.jpg" alt="功能 6 步骤 5 的画面截图（英文界面）">
+          <p class="txt">想让旅行更完整，可以点击「选一张封面」、加入「同行的人」和「标签」。这些都可以之后再补。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-6.jpg" alt="功能 6 步骤 6 的画面截图（英文界面）">
+          <p class="txt">在「要纳入的记录」区块，勾选要放进这次旅行的到访记录，或直接点击「全选」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-7.jpg" alt="功能 6 步骤 7 的画面截图（英文界面）">
+          <p class="txt">点击「保存」。屏幕出现「已创建旅行」就完成了。<small>还没整理完的话，可以先打开「放在“草稿”里，之后再补完」的开关。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-8.jpg" alt="功能 6 步骤 8 的画面截图（英文界面）">
+          <p class="txt">回到「旅行」标签页，点击刚创建的旅行卡片，就能看到每一天去了哪儿。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-9.jpg" alt="功能 6 步骤 9 的画面截图（英文界面）">
+          <p class="txt">点击某一天卡片下方的「写下这一天」，就能记下那天「特别的事」、心情和心得。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-10.jpg" alt="功能 6 步骤 10 的画面截图（英文界面）">
+          <p class="txt">在「相册」区块点击「全部」可以看所有照片，并用「添加照片」放进更多。<small>长按照片可以「设为封面」，或把它「从这次旅行移除」（照片本身不会被删除）。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-11.jpg" alt="功能 6 步骤 11 的画面截图（英文界面）">
+          <p class="txt">点击右上角的「⋯」按钮，可以「编辑旅行」、「标为草稿」、「归档旅行」或「删除旅行」。<small>删除旅行只会删掉整理的内容，到访记录与照片都还在。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 7 -->
+    <section class="feature" id="f7">
+      <span class="num">功能 7</span>
+      <h3>【用「回顾」看统计】</h3>
+      <p class="scene"><b>使用场景：</b>好奇自己这个月最常去哪里、总共移动了多远、通勤花了多少时间。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-1.jpg" alt="功能 7 步骤 1 的画面截图（英文界面）">
+          <p class="txt">点击屏幕最下方正中间的「回顾」标签页。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-2.jpg" alt="功能 7 步骤 2 的画面截图（英文界面）">
+          <p class="txt">点击「日」、「周」、「月」或「年」，切换要统计多长的时间。<small>点击「自定义」可以自己选一段期间。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-3.jpg" alt="功能 7 步骤 3 的画面截图（英文界面）">
+          <p class="txt">往下滑，一张一张看图表：移动了多远、最常去哪些地点、最常用什么交通方式、心情变化等等。</p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: 「回顾」页面的「通勤时间」卡片，上面写着「到设置开启“通勤追踪”，这里会画出每趟通勤花多久。」用红框圈出整张卡片。 -->
+          <p class="txt">想看通勤时间：点击「通勤时间」卡片，会直接带你到「设置」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-5.jpg" alt="功能 7 步骤 5 的画面截图（英文界面）">
+          <p class="txt">打开「通勤追踪」的开关，接着点击下面出现的「家」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-6.jpg" alt="功能 7 步骤 6 的画面截图（英文界面）">
+          <p class="txt">在列表中点选你的家。再用同样的方法点击「公司／学校」选好地点。<small>列表里没有的话，请先按功能 5 把地点创建好。「通勤日」可以选星期几要算通勤。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-7.jpg" alt="功能 7 步骤 7 的画面截图（英文界面）">
+          <p class="txt">回到「回顾」标签页，「通勤时间」卡片就会画出每趟通勤花了多久。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 功能 8 -->
+    <section class="feature" id="f8">
+      <span class="num">功能 8</span>
+      <h3>【备份与恢复】</h3>
+      <p class="scene"><b>使用场景：</b>准备换手机、要重装 App，或只是想给重要的回忆留一份保险。因为数据只保存在这部手机上，建议定期备份。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-1.jpg" alt="功能 8 步骤 1 的画面截图（英文界面）">
+          <p class="txt">到「设置」标签页，在「备份」区块点击「备份到手机」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-2.jpg" alt="功能 8 步骤 2 的画面截图（英文界面）">
+          <p class="txt">选择「不含照片」或「含照片」。<small>换手机的话建议选「含照片」，恢复之后照片才会一起回来。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-3.jpg" alt="功能 8 步骤 3 的画面截图（英文界面）">
+          <p class="txt">点击「创建备份」，等「打包中…」跑完，看到「已存到 Footprints 文件夹」就备份好了。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-4.jpg" alt="功能 8 步骤 4 的画面截图（英文界面）">
+          <p class="txt">接着点击「管理备份文件」，把备份传到手机以外的地方。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-5.jpg" alt="功能 8 步骤 5 的画面截图（英文界面）">
+          <p class="txt">点击备份右边的分享图标，把文件存到 iCloud 云盘、用 AirDrop 传到电脑，或发给自己。<small>这一步很重要：备份文件原本只放在这部手机里，手机丢了或 App 被删除，它也会跟着消失。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-6.jpg" alt="功能 8 步骤 6 的画面截图（英文界面）">
+          <p class="txt">要恢复时：在「设置」的「备份」区块点击「从备份恢复」。</p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: iPhone 的文件选择界面，显示一个名为「Footprints-备份-2026-10-12.zip」的文件。用红框圈出这个文件。 -->
+          <p class="txt">在文件选择界面中，找到并点选你的 Footprints 备份文件。</p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: 弹出的确认窗口，标题是「用这份备份替换现有数据？」，正文写着备份日期、条数，以及「这部手机上现在的数据会被全部替换，不是合并。」用红框圈出「恢复」按钮。 -->
+          <p class="txt">确认日期和条数没错之后，点击「恢复」。看到「已恢复 ○ 条记录」就完成了。</p>
+        </li>
+      </ol>
+      <p class="tip">请注意：恢复会把手机上现有的数据「全部替换」，不是把两边加在一起。如果手机上已经有新记录，请先给它另外做一份备份。</p>
+    </section>
+
+    <!-- 功能 9 -->
+    <section class="feature" id="f9">
+      <span class="num">功能 9</span>
+      <h3>【解锁完整版与恢复购买】</h3>
+      <p class="scene"><b>使用场景：</b>30 天免费试用快到期，想继续自动记录；或是换了手机、重装 App，想把已经买过的完整版找回来。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/9-1.jpg" alt="功能 9 步骤 1 的画面截图（英文界面）">
+          <p class="txt">到「设置」标签页，在「完整版」区块点击「解锁完整版」。<small>试用快到期时，屏幕上方也会出现提醒，点击提醒上的「解锁」会到同一页。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/9-2.jpg" alt="功能 9 步骤 2 的画面截图（英文界面）">
+          <p class="txt">看完说明后，点击上方的「以 ○○ 解锁（一次性付清）」按钮。<small>实际金额以屏幕上显示的为准。这是一次性付清，不是订阅，不会自动续费。</small></p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: iPhone 系统的 App Store 付款确认面板（显示项目名称、金额，以及连按两下侧边按钮确认的提示）。不需要红框。 -->
+          <p class="txt">按照 iPhone 的提示确认付款（连按两下侧边按钮，或使用面容 ID／触控 ID）。</p>
+        </li>
+        <li class="noimg">
+          <!-- 暂无截图: 「解锁完整版」页面，最上方的状态变成「完整版已解锁，感谢你的支持。」用红框圈出这一行。 -->
+          <p class="txt">看到「完整版已解锁」就完成了，自动记录会继续运行。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/9-5.jpg" alt="功能 9 步骤 5 的画面截图（英文界面）">
+          <p class="txt">之前买过、换了手机或重装 App：在同一个页面的最下方点击「恢复购买」，不用再付一次钱。<small>请确认手机登录的是当初购买时用的 Apple ID。</small></p>
+        </li>
+      </ol>
+      <p class="tip">小提示：「恢复购买」只会恢复解锁状态，不会把你的记录带回来。记录请用功能 8 的备份与恢复来搬。</p>
+    </section>
+
+    <!-- 功能 10 -->
+    <section class="feature" id="f10">
+      <span class="num">功能 10</span>
+      <h3>【调整外观与显示方式】</h3>
+      <p class="scene"><b>使用场景：</b>想换成深色界面、把距离改成英里，或是让地图看起来不一样。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-1.jpg" alt="功能 10 步骤 1 的画面截图（英文界面）">
+          <p class="txt">到「设置」标签页，往下滑到「显示与地图」区块，点击「外观」。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-2.jpg" alt="功能 10 步骤 2 的画面截图（英文界面）">
+          <p class="txt">选择「跟随系统」、「浅色」或「深色」，界面会马上切换过去。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-3.jpg" alt="功能 10 步骤 3 的画面截图（英文界面）">
+          <p class="txt">点击「距离单位」，可以在「公里」与「英里」之间切换。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-4.jpg" alt="功能 10 步骤 4 的画面截图（英文界面）">
+          <p class="txt">点击「地图标记显示」，决定地图上的标记要怎么呈现。<small>地点很多的话，「自动聚合」会把靠近的标记收在一起，看起来比较清爽。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-5.jpg" alt="功能 10 步骤 5 的画面截图（英文界面）">
+          <p class="txt">点击「设置」最上方的卡片，可以输入「你的名字」。<small>名字只会显示在这部手机上，不会上传。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== 3. FAQ ===== -->
+    <h2 id="faq">常见问题</h2>
+    <div class="faq">
+      <details open>
+        <summary>Q1：我的位置数据会被上传吗？</summary>
+        <p>不会。Footprints 没有账号、也没有云端同步，你的记录只保存在这部手机上。只有你自己点了「备份到手机」并把文件分享出去时，数据才会离开手机。更完整的说明可以在 App 的「设置」→「帮助中心与常见问题」，或<a href="privacy-zh-hans.html">隐私政策</a>中看到。</p>
+      </details>
+      <details>
+        <summary>Q2：为什么「时序」没有自动出现记录？</summary>
+        <p>请依次检查三件事：</p>
+        <p>① 「设置」→「位置与记录」→「自动识别到访」有没有打开。<br>
+        ② 定位权限是不是「始终」。如果是「使用App期间」，手机一收起来就记不到了，请按功能 1 的步骤 4 到 6 修改。<br>
+        ③ 如果「设置」里显示已经很久没有新的定位点，点击「重新开始记录」。</p>
+        <p>另外，你一直待在同一个地方不动时，本来就不会有新的记录，这是正常的。免费试用结束而没有解锁时，自动记录也会停止。</p>
+      </details>
+      <details>
+        <summary>Q3：换手机时，数据要怎么搬过去？</summary>
+        <p>分成两件事：<b>记录</b>用备份搬，在旧手机按功能 8 做一份「含照片」的备份并传出来，到新手机用「从备份恢复」读进去。<b>完整版</b>用「恢复购买」找回来（功能 9），只要是同一个 Apple ID 就不用再付费。两个都做完，新手机就跟旧手机一样了。</p>
+      </details>
+      <details>
+        <summary>Q4：免费试用结束后，之前的记录还看得到吗？</summary>
+        <p>看得到。试用结束后如果没有解锁，自动记录会停止，也不能再新增或修改记录；但你记录过的所有内容都还在，随时可以查看、备份、导出或删除。解锁之后就会继续记录。</p>
+      </details>
+      <details>
+        <summary>Q5：自动记录的地点或时间不对，怎么办？</summary>
+        <p>可以自己改。在「时序」长按那一条到访，点击「编辑到访」，就能换地点、调整时间（功能 3）。如果相邻的两家店被记成同一个地点，在编辑时点击地点栏 →「新增地点」，就能把这次到访改挂到新的地点。常常因为短暂路过而多出记录的话，可以到「设置」→「位置与记录」把「最短停留时间」调长一点。</p>
+      </details>
+    </div>
+
+    <footer>
+      <p>还有其他问题吗？在 App 的「设置」→「支持」→「意见反馈」写邮件给我们，或前往<a href="support-zh-hans.html">支持页面</a>。</p>
+      <p>© 2026 CHIAHSIN LAI．Footprints</p>
+    </footer>
+  </main>
+</body>
+</html>

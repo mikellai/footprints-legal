@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Footprints 操作ガイド</title>
+  <meta name="description" content="Footprints の画像付き操作ガイド：自動記録の始め方、タイムラインと足あとの見方、旅行の整理、バックアップと復元。">
+  <link rel="alternate" hreflang="zh-Hant" href="https://mikellai.github.io/footprints-legal/guide.html">
+  <link rel="alternate" hreflang="en" href="https://mikellai.github.io/footprints-legal/guide-en.html">
+  <link rel="alternate" hreflang="zh-Hans" href="https://mikellai.github.io/footprints-legal/guide-zh-hans.html">
+  <link rel="alternate" hreflang="ja" href="https://mikellai.github.io/footprints-legal/guide-ja.html">
+  <link rel="alternate" hreflang="x-default" href="https://mikellai.github.io/footprints-legal/guide-en.html">
+  <!--
+    スクリーンショットは英語版と共通の images/en/（英語表示）を使用。images/raw/annotate.py で生成（python3 annotate.py en）。
+    <li class="noimg"> の手順はまだ画像がありません（撮るべき内容はコメントに記載）。
+  -->
+  <style>
+    :root{--bg:#f5f7f4;--card:#fff;--text:#1d2822;--muted:#617068;--accent:#287a55;--accent-soft:#e4f1ea;--line:#dce5df;--warn:#fff4cf;--warnline:#d7a514;--shot:#eef2ee;--shotline:#b9c7be}
+    @media(prefers-color-scheme:dark){:root{--bg:#101612;--card:#18201b;--text:#eef5f0;--muted:#afbeb5;--accent:#74d3a5;--accent-soft:#1d2c24;--line:#334139;--warn:#3a3013;--warnline:#e0b83c;--shot:#141b17;--shotline:#45564c}}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.75}
+    main{max-width:820px;margin:auto;padding:36px 20px 72px}
+    a{color:var(--accent)}
+    nav.back{margin-bottom:28px}
+    h1{font-size:2rem;line-height:1.25;margin:0 0 6px}
+    h2{font-size:1.45rem;line-height:1.3;margin:56px 0 12px;padding-top:8px}
+    h3{font-size:1.2rem;line-height:1.35;margin:0 0 4px}
+    p,li{color:var(--muted)}
+    .lead{font-size:1.05rem}
+    .points{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:12px}
+    .points li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px}
+    .points strong{display:block;color:var(--text);font-size:1.05rem}
+    .toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px 16px 40px;margin:24px 0 0}
+    .toc li{margin:2px 0}
+    .feature{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;margin:22px 0;scroll-margin-top:16px}
+    .feature .num{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.82rem;border-radius:999px;padding:1px 12px;margin-bottom:8px}
+    .scene{margin:6px 0 0}
+    .scene b{color:var(--text)}
+    .steps{list-style:none;padding:0;margin:18px 0 0;counter-reset:step}
+    .steps>li{counter-increment:step;display:grid;grid-template-columns:200px 1fr;gap:18px;align-items:start;padding:18px 0;border-top:1px solid var(--line)}
+    .shot{border:2px dashed var(--shotline);background:var(--shot);border-radius:22px;aspect-ratio:9/16;padding:16px 14px;font-size:.84rem;line-height:1.6;color:var(--muted);display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+    .shot::before{content:"画像のヒント";display:block;font-weight:700;color:var(--accent);font-size:.78rem;letter-spacing:.08em;margin-bottom:6px}
+    .shot-img{width:100%;height:auto;border-radius:22px;border:1px solid var(--line);display:block}
+    .steps>li.noimg{grid-template-columns:1fr}
+    .note{font-size:.92rem}
+    .txt{margin:0;color:var(--text);font-size:1.02rem}
+    .txt::before{content:counter(step) ". ";font-weight:700;color:var(--accent)}
+    .txt small{display:block;color:var(--muted);font-size:.9rem;margin-top:6px}
+    .tip{background:var(--warn);border-left:4px solid var(--warnline);padding:12px 16px;margin:18px 0 0;border-radius:8px;color:var(--text)}
+    .faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:12px 0}
+    .faq summary{cursor:pointer;font-weight:700;color:var(--text)}
+    .faq details p{margin:10px 0 0}
+    .lang{font-size:.85rem;color:var(--muted);margin:0 0 14px}
+    footer{border-top:1px solid var(--line);margin-top:48px;padding-top:18px;font-size:.9rem;color:var(--muted)}
+    @media(max-width:600px){.steps>li{grid-template-columns:1fr}.shot,.shot-img{max-width:240px;margin:0 auto}}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="lang"><a href="guide.html" lang="zh-Hant" hreflang="zh-Hant">繁體中文</a> · <a href="guide-en.html" lang="en" hreflang="en">English</a> · <a href="guide-zh-hans.html" lang="zh-Hans" hreflang="zh-Hans">简体中文</a> · <span aria-current="page">日本語</span></div>
+    <nav class="back"><a href="index-ja.html">← ホームに戻る</a></nav>
+
+    <!-- ===== 1. はじめに ===== -->
+    <h1>Footprints 操作ガイド</h1>
+    <p class="lead">こんにちは、Footprints へようこそ！このガイドでは、アプリの使い方を一歩ずつご案内します。一度に全部読む必要はありません。やりたいことが出てきたら、下の目次からそのページに移動してください。</p>
+
+    <ul class="points">
+      <li><strong>① 行った場所を自動で記録</strong>「先週の水曜日、どこに行ったんだっけ」と思い出せないことはありませんか？自動記録をオンにすると、滞在した場所や移動のようすが自動で「タイムライン」に並びます。手動でチェックインする必要はありません。</li>
+      <li><strong>② データはあなたの iPhone の中だけ</strong>位置情報がアップロードされないか心配ですか？Footprints にはアカウントもクラウドもなく、記録はこの iPhone にだけ保存されます。バックアップするかどうか、誰に渡すかは、すべてあなたが決められます。</li>
+      <li><strong>③ 足あとを思い出に</strong>旅行から帰っても整理が面倒…という方へ。数日分の足あとを、ワンタップでひとつの「旅行」にまとめられます。「振り返り」では、よく行く場所や移動した距離をグラフで見られます。</li>
+    </ul>
+
+    <ol class="toc">
+      <li><a href="#f1">自動記録を始める</a></li>
+      <li><a href="#f2">「タイムライン」で1日の足あとを見る</a></li>
+      <li><a href="#f3">記録を手動で追加・修正する</a></li>
+      <li><a href="#f4">「足あと」の地図で行った場所を見る</a></li>
+      <li><a href="#f5">場所を追加・整理する</a></li>
+      <li><a href="#f6">「旅行」を作成・整理する</a></li>
+      <li><a href="#f7">「振り返り」で統計を見る</a></li>
+      <li><a href="#f8">バックアップと復元</a></li>
+      <li><a href="#f9">フル版のロック解除と購入の復元</a></li>
+      <li><a href="#f10">外観と表示方法を変更する</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+    </ol>
+
+    <!-- ===== 2. 主な機能 ===== -->
+    <h2>主な機能の操作手順</h2>
+    <p>画面のいちばん下に、「タイムライン」「足あと」「振り返り」「旅行」「設定」の5つのタブがあります。以下の手順は、すべてこの5つのタブから始まります。</p>
+    <p class="note">※ 以下のスクリーンショットは英語表示のものです。ボタンの位置は日本語表示でも同じですので、文言は手順の説明をご参照ください。</p>
+
+    <!-- 機能 1 -->
+    <section class="feature" id="f1">
+      <span class="num">機能 1</span>
+      <h3>【自動記録を始める】</h3>
+      <p class="scene"><b>こんなときに：</b>アプリをインストールしたばかりで、行った場所を自動で記録できるようにしたいとき。最初に行う設定です。これを済ませると、ほかのタブにも内容が表示されるようになります。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-1.jpg" alt="機能 1 手順 1 の画面（英語表示）">
+          <p class="txt">画面のいちばん下、右端にある「設定」タブをタップします。<small>画面中央の「設定を開く」ボタンをタップしても、同じ場所に移動します。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-2.jpg" alt="機能 1 手順 2 の画面（英語表示）">
+          <p class="txt">下にスクロールして「位置情報と記録」のセクションを表示し、「訪問を自動で記録」の右にあるスイッチをオンにします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-3.jpg" alt="機能 1 手順 3 の画面（英語表示）">
+          <p class="txt">システムの確認ダイアログが表示されるので、まず「アプリの使用中は許可」をタップします。<small>iPhone では、アプリが最初から「常に」を求めることはできません。そのため2段階に分かれていて、次の手順で「常に」に変更します。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-4.jpg" alt="機能 1 手順 4 の画面（英語表示）">
+          <p class="txt">アプリに戻ると「現在は記録していません」という案内が表示されます。そのすぐ下にある「設定を開く」をタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-5.jpg" alt="機能 1 手順 5 の画面（英語表示）">
+          <p class="txt">iPhone の設定画面で「位置情報」をタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-6.jpg" alt="機能 1 手順 6 の画面（英語表示）">
+          <p class="txt">「常に」を選び、Footprints に戻ります。<small>「常に」を選んだときだけ、iPhone をポケットに入れている間も行った場所を記録できます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/1-7.jpg" alt="機能 1 手順 7 の画面（英語表示）">
+          <p class="txt">「バックグラウンドで記録中」と表示されたら完了です！あとはいつもどおり過ごすだけで、記録が自動で「タイムライン」に並びます。<small>記録中は、iPhone の画面上部に青い位置情報インジケータが表示されます。これは正常な動作です。</small></p>
+        </li>
+      </ol>
+      <p class="tip">ヒント：バッテリーをもっと節約したいときや、ルートをもっと細かく残したいときは、同じセクションの「記録の精度」をタップして「省電力」または「高精度」を選べます。記録を止めたいときは「訪問を自動で記録」をオフにするだけです。すでに記録されたデータは削除されません。</p>
+    </section>
+
+    <!-- 機能 2 -->
+    <section class="feature" id="f2">
+      <span class="num">機能 2</span>
+      <h3>【「タイムライン」で1日の足あとを見る】</h3>
+      <p class="scene"><b>こんなときに：</b>今日、昨日、またはある日に、どこへ行ってどのくらい滞在したかを振り返りたいとき。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-1.jpg" alt="機能 2 手順 1 の画面（英語表示）">
+          <p class="txt">画面のいちばん下、左端にある「タイムライン」タブをタップすると、今日の記録が表示されます。<small>上から順に、「1日のまとめ」、その日の小さな地図、時刻順に並んだ訪問と移動の記録です。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-2.jpg" alt="機能 2 手順 2 の画面（英語表示）">
+          <p class="txt">日付の左にある「‹」をタップすると前の日、右にある「›」をタップすると次の日を表示します。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-3.jpg" alt="機能 2 手順 3 の画面（英語表示）">
+          <p class="txt">特定の日に直接移動したいときは、日付バーの右にあるカレンダーアイコンをタップし、表示されたカレンダーで日付を選びます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-4.jpg" alt="機能 2 手順 4 の画面（英語表示）">
+          <p class="txt">見終わったら、右上の「今日に戻る」ボタンをタップすると今日に戻れます。<small>このボタンは、今日以外の日を表示しているときだけ表示されます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-5.jpg" alt="機能 2 手順 5 の画面（英語表示）">
+          <p class="txt">訪問カードをタップすると、その場所の詳細ページが開き、これまでに何回訪れたか、合計でどのくらい滞在したかを確認できます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/2-6.jpg" alt="機能 2 手順 6 の画面（英語表示）">
+          <p class="txt">小さな地図をタップすると「足あと」タブに移動し、その日のルートを大きな地図で見られます。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 機能 3 -->
+    <section class="feature" id="f3">
+      <span class="num">機能 3</span>
+      <h3>【記録を手動で追加・修正する】</h3>
+      <p class="scene"><b>こんなときに：</b>iPhone を持って出るのを忘れた日の記録をあとから足したいとき。自動で記録された時刻や場所が少し違っていて、自分で直したいとき。ついでに日記を書いたり、写真を追加したりもできます。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-1.jpg" alt="機能 3 手順 1 の画面（英語表示）">
+          <p class="txt">「タイムライン」タブで、画面右下の「＋」ボタンをタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-2.jpg" alt="機能 3 手順 2 の画面（英語表示）">
+          <p class="txt">開いたメニューで「訪問を追加」をタップします。<small>ほかの3つの項目：「移動を追加」は移動を1件追加、「日記を追加」はひとこと書き残す、「写真を追加」はその日の訪問のどれかに写真を追加します。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-3.jpg" alt="機能 3 手順 3 の画面（英語表示）">
+          <p class="txt">いちばん上の場所の欄をタップして、訪れた場所を選びます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-4.jpg" alt="機能 3 手順 4 の画面（英語表示）">
+          <p class="txt">「場所を選択」パネルで場所をタップして選びます。<small>一覧に見つからないときは、「場所を追加」をタップすればその場で新しい場所を作成できます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-5.jpg" alt="機能 3 手順 5 の画面（英語表示）">
+          <p class="txt">「到着」と「出発」の右にある時刻をそれぞれタップして、正しい時刻に合わせます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-6.jpg" alt="機能 3 手順 6 の画面（英語表示）">
+          <p class="txt">もっと残しておきたいときは、「気分」を選んだり、「タグ」を付けたり、「メモ」にひとこと書いたり、「写真を追加」をタップしたりできます。どれも入力しなくてもかまいません。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-7.jpg" alt="機能 3 手順 7 の画面（英語表示）">
+          <p class="txt">右上の「保存」ボタンをタップします。「訪問を追加しました」と表示されたら完了です。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/3-8.jpg" alt="機能 3 手順 8 の画面（英語表示）">
+          <p class="txt">すでにある記録を修正したいとき：「タイムライン」でその訪問カードを長押しし、「訪問を編集」をタップします。修正が終わったら、同じように「保存」をタップします。<small>削除したいときは、「この訪問を削除」をタップして確認します。削除すると元に戻せませんので、ご注意ください。</small></p>
+        </li>
+      </ol>
+      <p class="tip">ヒント：手動で修正した内容は、自動記録で上書きされることはありません。安心して修正してください。移動と日記は、タップするだけで編集画面が開きます。</p>
+    </section>
+
+    <!-- 機能 4 -->
+    <section class="feature" id="f4">
+      <span class="num">機能 4</span>
+      <h3>【「足あと」の地図で行った場所を見る】</h3>
+      <p class="scene"><b>こんなときに：</b>今月や今年、どこを歩いたかを地図で見たいとき。あるお店にいつ行ったかを調べたいとき。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-1.jpg" alt="機能 4 手順 1 の画面（英語表示）">
+          <p class="txt">画面のいちばん下にある「足あと」タブをタップして、地図を開きます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-2.jpg" alt="機能 4 手順 2 の画面（英語表示）">
+          <p class="txt">「今日」「今週」「今月」「今年」のいずれかをタップして、足あとを表示する期間を切り替えます。<small>「カスタム」をタップすると開始日と終了日を自分で選べます。選んだら「適用」をタップします。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-3.jpg" alt="機能 4 手順 3 の画面（英語表示）">
+          <p class="txt">特定の場所を探したいときは、いちばん上の検索ボックスをタップして、場所の名前、都市、タグを入力します。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-4.jpg" alt="機能 4 手順 4 の画面（英語表示）">
+          <p class="txt">検索ボックスの右にあるアイコンのボタンをタップして、「絞り込み」パネルを開きます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-5.jpg" alt="機能 4 手順 5 の画面（英語表示）">
+          <p class="txt">「絞り込み」パネルで、見たい内容を選びます。たとえば「場所のみ」や、いくつかの「場所のカテゴリ」などです。<small>選び終えたら、いちばん下の「適用」をタップします。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-6.jpg" alt="機能 4 手順 6 の画面（英語表示）">
+          <p class="txt">地図上のマーカーをタップすると、下からその場所の小さなカードが出てきて、何回訪れたか、合計でどのくらい滞在したかがわかります。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-7.jpg" alt="機能 4 手順 7 の画面（英語表示）">
+          <p class="txt">「場所の詳細を見る」をタップするとこの場所のすべての訪問を確認でき、「その日のタイムラインを見る」をタップするとその日の記録に移動します。<small>カードを上に引き上げると、最近の訪問や写真も見られます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/4-8.jpg" alt="機能 4 手順 8 の画面（英語表示）">
+          <p class="txt">右側のいちばん上にある現在地ボタンをタップすると、地図が今いる場所に移動し、青い点が表示されます。<small>真ん中のボタンは「地図のレイヤー」で、「航空写真」などの表示に切り替えられます。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 機能 5 -->
+    <section class="feature" id="f5">
+      <span class="num">機能 5</span>
+      <h3>【場所を追加・整理する】</h3>
+      <p class="scene"><b>こんなときに：</b>自動記録で新しい場所が見つかったけれど名前が付いていないとき。同じお店が2つの場所として記録されてしまったとき。先に「自宅」や「職場」を作っておきたいとき。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-1.jpg" alt="機能 5 手順 1 の画面（英語表示）">
+          <p class="txt">「足あと」タブで、追加したい位置まで地図を動かし、右側の「＋」ボタンをタップします。<small>地図上のその位置を直接長押しすることもできます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-2.jpg" alt="機能 5 手順 2 の画面（英語表示）">
+          <p class="txt">「名前」の欄に、場所の名前を入力します。たとえば「自宅」や「角のカフェ」などです。<small>座標は自動で入力されているので、自分で入力する必要はありません。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-3.jpg" alt="機能 5 手順 3 の画面（英語表示）">
+          <p class="txt">「カテゴリ」をひとつ選び、「場所を作成」をタップします。これで地図にその場所が表示されます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-4.jpg" alt="機能 5 手順 4 の画面（英語表示）">
+          <p class="txt">自動で見つかった場所に名前を付ける：「設定」タブを開き、「位置情報と記録」のセクションで「名前のない場所」をタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/5-5.jpg" alt="機能 5 手順 5 の画面（英語表示）">
+          <p class="txt">場所をひとつタップし、名前を入力して保存します。名前を付けた場所は、この一覧から消えます。</p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: 「設定」タブの「位置情報と記録」のセクション。「重複の可能性がある場所」の行を赤枠で囲む。右に数字（たとえば 2）が表示されている。そのひとつ上の行は、オンになっている「重複した場所の通知」。 -->
+          <p class="txt">重複した場所をひとつにまとめる：「設定」の「位置情報と記録」のセクションで「重複の可能性がある場所」をタップします。<small>この行は、「重複した場所の通知」をオンにしていて、実際に重複していそうな場所があるときだけ表示されます。</small></p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: 「重複している可能性のある場所」画面。場所が2つずつの組で並び、それぞれの組の下に理由（たとえば「距離が近く、名前も似ている・距離30 m」）が書かれている。そのうちの1組を赤枠で囲む。 -->
+          <p class="txt">同じ場所に見える組をタップします。</p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: 下から出てくる「どちらを残しますか？」パネル。上に2つの場所のカード（名前と訪問回数を表示）、下に「別々の場所です」の行がある。残したいほうのカードを赤枠で囲む。 -->
+          <p class="txt">「どちらを残しますか？」パネルで、残したいほうをタップします。両方の訪問記録はそのまま残り、ひとつの場所にまとめられます。<small>実際には別々の場所だった場合は、「別々の場所です」をタップしてください。今後、その組は通知されなくなります。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 機能 6 -->
+    <section class="feature" id="f6">
+      <span class="num">機能 6</span>
+      <h3>【「旅行」を作成・整理する】</h3>
+      <p class="scene"><b>こんなときに：</b>海外旅行やお出かけから帰ってきて、その数日間の足あとや写真、感想を1冊の旅行日記にまとめたいとき。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-1.jpg" alt="機能 6 手順 1 の画面（英語表示）">
+          <p class="txt">画面のいちばん下にある「旅行」タブをタップします。</p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: 「旅行」タブのいちばん上にある提案カードの拡大。タイトルは「10月3日～10月7日、東京」のような表示。カードにある「旅行を作成」ボタンを赤枠で囲む。 -->
+          <p class="txt">「この数日を旅行にまとめますか？」の提案カードが表示されていたら、そのまま「旅行を作成」をタップするのがいちばん簡単です。<small>この提案が不要なときは、「スキップ」をタップします。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-3.jpg" alt="機能 6 手順 3 の画面（英語表示）">
+          <p class="txt">提案カードがないときや、最初から自分で作りたいときは、右上の「＋」ボタンをタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-4.jpg" alt="機能 6 手順 4 の画面（英語表示）">
+          <p class="txt">「旅行名」を入力し、「日付」をタップして出発日と帰ってきた日を選びます。<small>名前を入力しないと保存できません。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-5.jpg" alt="機能 6 手順 5 の画面（英語表示）">
+          <p class="txt">旅行をもっと充実させたいときは、「カバーを選ぶ」をタップしたり、「同行者」や「タグ」を追加したりできます。どれもあとから追加できます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-6.jpg" alt="機能 6 手順 6 の画面（英語表示）">
+          <p class="txt">「含める記録」のセクションで、この旅行に入れたい訪問記録にチェックを付けます。「すべて選択」をタップしてもかまいません。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-7.jpg" alt="機能 6 手順 7 の画面（英語表示）">
+          <p class="txt">「保存」をタップします。「旅行を作成しました」と表示されたら完了です。<small>まだ整理が終わっていないときは、「「下書き」に入れて、あとで仕上げる」のスイッチをオンにしておけます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-8.jpg" alt="機能 6 手順 8 の画面（英語表示）">
+          <p class="txt">「旅行」タブに戻り、作成したばかりの旅行カードをタップすると、日ごとにどこへ行ったかを見られます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-9.jpg" alt="機能 6 手順 9 の画面（英語表示）">
+          <p class="txt">その日のカードの下にある「この日のことを書く」をタップすると、その日の「特別なこと」や気分、感想を書き残せます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-10.jpg" alt="機能 6 手順 10 の画面（英語表示）">
+          <p class="txt">「アルバム」のセクションで「すべて表示」をタップすると、すべての写真を見られます。「写真を追加」でさらに写真を入れることもできます。<small>写真を長押しすると、「カバーに設定」したり、「この旅行から外す」ことができます（写真自体は削除されません）。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/6-11.jpg" alt="機能 6 手順 11 の画面（英語表示）">
+          <p class="txt">右上の「⋯」ボタンをタップすると、「旅行を編集」「下書きにする」「旅行をアーカイブ」「旅行を削除」を選べます。<small>旅行を削除しても、消えるのはまとめた内容だけです。訪問記録と写真はそのまま残ります。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 機能 7 -->
+    <section class="feature" id="f7">
+      <span class="num">機能 7</span>
+      <h3>【「振り返り」で統計を見る】</h3>
+      <p class="scene"><b>こんなときに：</b>今月いちばんよく行った場所、合計の移動距離、通勤にかかった時間が気になるとき。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-1.jpg" alt="機能 7 手順 1 の画面（英語表示）">
+          <p class="txt">画面のいちばん下、真ん中にある「振り返り」タブをタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-2.jpg" alt="機能 7 手順 2 の画面（英語表示）">
+          <p class="txt">「日」「週」「月」「年」のいずれかをタップして、集計する期間を切り替えます。<small>「カスタム」をタップすると、期間を自分で選べます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-3.jpg" alt="機能 7 手順 3 の画面（英語表示）">
+          <p class="txt">下にスクロールして、グラフを1枚ずつ見ていきます。どのくらい移動したか、よく行く場所、よく使う移動手段、気分の変化などがわかります。</p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: 「振り返り」画面の「通勤時間」カード。「設定で「通勤の記録」をオンにすると、通勤1回ごとの所要時間がここに表示されます。」と書かれている。カード全体を赤枠で囲む。 -->
+          <p class="txt">通勤時間を見たいとき：「通勤時間」カードをタップすると、そのまま「設定」に移動します。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-5.jpg" alt="機能 7 手順 5 の画面（英語表示）">
+          <p class="txt">「通勤の記録」のスイッチをオンにし、続けて下に表示される「自宅」をタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-6.jpg" alt="機能 7 手順 6 の画面（英語表示）">
+          <p class="txt">一覧からあなたの自宅をタップして選びます。同じ方法で「職場／学校」をタップして場所を選びます。<small>一覧にないときは、先に機能 5 の手順で場所を作成してください。「通勤日」では、通勤として数える曜日を選べます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/7-7.jpg" alt="機能 7 手順 7 の画面（英語表示）">
+          <p class="txt">「振り返り」タブに戻ると、「通勤時間」カードに通勤1回ごとの所要時間が表示されます。</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 機能 8 -->
+    <section class="feature" id="f8">
+      <span class="num">機能 8</span>
+      <h3>【バックアップと復元】</h3>
+      <p class="scene"><b>こんなときに：</b>機種変更の前や、アプリを入れ直す前。あるいは、大切な思い出の控えを残しておきたいとき。データはこの iPhone にだけ保存されているので、定期的なバックアップをおすすめします。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-1.jpg" alt="機能 8 手順 1 の画面（英語表示）">
+          <p class="txt">「設定」タブを開き、「バックアップ」のセクションで「端末にバックアップ」をタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-2.jpg" alt="機能 8 手順 2 の画面（英語表示）">
+          <p class="txt">「写真なし」または「写真あり」を選びます。<small>機種変更のときは「写真あり」がおすすめです。復元したときに写真も一緒に戻ります。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-3.jpg" alt="機能 8 手順 3 の画面（英語表示）">
+          <p class="txt">「バックアップを作成」をタップし、「作成中…」が終わるのを待ちます。「Footprints フォルダに保存しました」と表示されたら、バックアップは完了です。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-4.jpg" alt="機能 8 手順 4 の画面（英語表示）">
+          <p class="txt">続けて「バックアップファイルの管理」をタップし、バックアップを iPhone 以外の場所に移します。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-5.jpg" alt="機能 8 手順 5 の画面（英語表示）">
+          <p class="txt">バックアップの右にある共有アイコンをタップして、ファイルを iCloud Drive に保存したり、AirDrop でパソコンに送ったり、自分宛てに送ったりします。<small>この手順はとても大切です。バックアップファイルは、そのままではこの iPhone の中にしかありません。iPhone をなくしたり、アプリを削除したりすると、一緒に消えてしまいます。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/8-6.jpg" alt="機能 8 手順 6 の画面（英語表示）">
+          <p class="txt">復元するとき：「設定」の「バックアップ」のセクションで「バックアップから復元」をタップします。</p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: iPhone のファイル選択画面。「Footprints-バックアップ-2026-10-12.zip」という名前のファイルが表示されている。このファイルを赤枠で囲む。 -->
+          <p class="txt">ファイル選択画面で、Footprints のバックアップファイルを探してタップします。</p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: 表示された確認ダイアログ。タイトルは「このバックアップで現在のデータを置き換えますか？」で、本文にバックアップの日付と件数、「この端末にある現在のデータはすべて置き換えられます。統合はされません。」と書かれている。「復元」ボタンを赤枠で囲む。 -->
+          <p class="txt">日付と件数が正しいことを確認してから、「復元」をタップします。「○件の記録を復元しました」と表示されたら完了です。</p>
+        </li>
+      </ol>
+      <p class="tip">ご注意：復元すると、iPhone にある現在のデータは「すべて置き換え」られます。両方を合わせるわけではありません。iPhone にすでに新しい記録がある場合は、先にその分のバックアップを別に作成してください。</p>
+    </section>
+
+    <!-- 機能 9 -->
+    <section class="feature" id="f9">
+      <span class="num">機能 9</span>
+      <h3>【フル版のロック解除と購入の復元】</h3>
+      <p class="scene"><b>こんなときに：</b>30日間の無料トライアルがもうすぐ終わるので、自動記録を続けたいとき。機種変更やアプリの再インストールのあと、購入済みのフル版を元に戻したいとき。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/9-1.jpg" alt="機能 9 手順 1 の画面（英語表示）">
+          <p class="txt">「設定」タブを開き、「フル版」のセクションで「フル版のロックを解除」をタップします。<small>トライアルの終了が近づくと、画面の上部にもお知らせが表示されます。お知らせにある「ロック解除」をタップしても、同じ画面に移動します。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/9-2.jpg" alt="機能 9 手順 2 の画面（英語表示）">
+          <p class="txt">説明を読んだら、画面上部の「○○でロック解除（買い切り）」ボタンをタップします。<small>実際の金額は、画面に表示されているものが正しい金額です。一度きりのお支払いで、サブスクリプションではなく、自動更新もありません。</small></p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: iPhone のシステムが表示する App Store の支払い確認パネル（商品名と金額、サイドボタンをダブルクリックして確認する案内が表示されている）。赤枠は不要。 -->
+          <p class="txt">iPhone の案内に従って支払いを確認します（サイドボタンをダブルクリックするか、Face ID／Touch ID を使います）。</p>
+        </li>
+        <li class="noimg">
+          <!-- スクリーンショット未掲載: 「フル版のロックを解除」画面。いちばん上の状態が「フル版のロックが解除されています。ご支援ありがとうございます。」に変わっている。この行を赤枠で囲む。 -->
+          <p class="txt">「フル版のロックが解除されています」と表示されたら完了です。自動記録はそのまま続きます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/9-5.jpg" alt="機能 9 手順 5 の画面（英語表示）">
+          <p class="txt">以前に購入していて、機種変更やアプリの再インストールをしたとき：同じ画面のいちばん下にある「購入を復元」をタップします。もう一度支払う必要はありません。<small>iPhone に、購入時と同じ Apple ID でサインインしていることを確認してください。</small></p>
+        </li>
+      </ol>
+      <p class="tip">ヒント：「購入を復元」で戻るのはロック解除の状態だけで、記録は戻りません。記録は、機能 8 のバックアップと復元を使って移してください。</p>
+    </section>
+
+    <!-- 機能 10 -->
+    <section class="feature" id="f10">
+      <span class="num">機能 10</span>
+      <h3>【外観と表示方法を変更する】</h3>
+      <p class="scene"><b>こんなときに：</b>画面をダークに切り替えたいとき、距離をマイルで表示したいとき、地図の見た目を変えたいとき。</p>
+      <ol class="steps">
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-1.jpg" alt="機能 10 手順 1 の画面（英語表示）">
+          <p class="txt">「設定」タブを開き、下にスクロールして「表示とマップ」のセクションで「外観」をタップします。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-2.jpg" alt="機能 10 手順 2 の画面（英語表示）">
+          <p class="txt">「システムに合わせる」「ライト」「ダーク」のいずれかを選ぶと、画面がすぐに切り替わります。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-3.jpg" alt="機能 10 手順 3 の画面（英語表示）">
+          <p class="txt">「距離の単位」をタップすると、「km」と「マイル」を切り替えられます。</p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-4.jpg" alt="機能 10 手順 4 の画面（英語表示）">
+          <p class="txt">「マップのマーカー表示」をタップして、地図上のマーカーの表示方法を選びます。<small>場所が多いときは、「自動でまとめる」にすると近くのマーカーがひとつにまとまり、すっきり見やすくなります。</small></p>
+        </li>
+        <li>
+          <img class="shot-img" loading="lazy" width="600" height="1304" src="images/en/10-5.jpg" alt="機能 10 手順 5 の画面（英語表示）">
+          <p class="txt">「設定」のいちばん上にあるカードをタップすると、「あなたの名前」を入力できます。<small>名前はこの iPhone にだけ表示され、アップロードされません。</small></p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== 3. FAQ ===== -->
+    <h2 id="faq">よくある質問</h2>
+    <div class="faq">
+      <details open>
+        <summary>Q1：位置情報のデータはアップロードされますか？</summary>
+        <p>いいえ。Footprints にはアカウントもクラウド同期もなく、記録はこの iPhone にだけ保存されます。データが iPhone の外に出るのは、ご自身で「端末にバックアップ」をタップし、そのファイルを共有したときだけです。さらに詳しい説明は、アプリの「設定」→「ヘルプとよくある質問」、または<a href="privacy-ja.html">プライバシーポリシー</a>でご覧いただけます。</p>
+      </details>
+      <details>
+        <summary>Q2：「タイムライン」に記録が自動で表示されないのはなぜですか？</summary>
+        <p>次の3点を順番にご確認ください。</p>
+        <p>① 「設定」→「位置情報と記録」→「訪問を自動で記録」がオンになっているか。<br>
+        ② 位置情報の許可が「常に」になっているか。「このアプリの使用中」の場合、iPhone をしまうと記録できなくなります。機能 1 の手順 4～6 に沿って変更してください。<br>
+        ③ 「設定」に、長い間新しい位置情報がないと表示されている場合は、「記録を再開」をタップします。</p>
+        <p>なお、同じ場所にずっといて動いていないときは、もともと新しい記録は増えません。これは正常な動作です。また、無料トライアルの終了後にロックを解除していない場合も、自動記録は停止します。</p>
+      </details>
+      <details>
+        <summary>Q3：機種変更のとき、データはどうやって移せばよいですか？</summary>
+        <p>2つに分けて行います。<b>記録</b>はバックアップで移します。古い iPhone で機能 8 の手順に沿って「写真あり」のバックアップを作成して外に出し、新しい iPhone で「バックアップから復元」を使って読み込みます。<b>フル版</b>は「購入を復元」で元に戻します（機能 9）。同じ Apple ID であれば、もう一度支払う必要はありません。両方が済めば、新しい iPhone は古い iPhone と同じ状態になります。</p>
+      </details>
+      <details>
+        <summary>Q4：無料トライアルが終わったあとも、それまでの記録は見られますか？</summary>
+        <p>はい、見られます。トライアル終了後にロックを解除していない場合、自動記録は停止し、記録の追加や修正もできなくなります。ただし、これまでに記録したものはすべて残っていて、いつでも閲覧、バックアップ、書き出し、削除ができます。ロックを解除すると、記録が再開されます。</p>
+      </details>
+      <details>
+        <summary>Q5：自動で記録された場所や時刻が違っているときは、どうすればよいですか？</summary>
+        <p>ご自身で修正できます。「タイムライン」でその訪問を長押しし、「訪問を編集」をタップすると、場所を変えたり、時刻を調整したりできます（機能 3）。隣り合った2つのお店が同じ場所として記録されている場合は、編集中に場所の欄 →「場所を追加」をタップすると、その訪問を新しい場所に付け替えられます。少し通りかかっただけで記録が増えてしまうことが多い場合は、「設定」→「位置情報と記録」で「最短滞在時間」を長めに設定してみてください。</p>
+      </details>
+    </div>
+
+    <footer>
+      <p>ほかにご不明な点はありますか？アプリの「設定」→「サポート」→「フィードバック」からメールでお問い合わせいただくか、<a href="support-ja.html">サポートページ</a>をご覧ください。</p>
+      <p>© 2026 CHIAHSIN LAI．Footprints</p>
+    </footer>
+  </main>
+</body>
+</html>
